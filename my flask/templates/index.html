@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{{ url_for('static', filename='images/cyber.jpg') }}');
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the background image */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height of the viewport */
+            margin: 0;
+            color: #333; /* Default text color */
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for readability */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            text-align: center; /* Center text */
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+        input[type="password"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357ab8;
+        }
+        #feedback {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 300px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+    <script>
+        async function checkPassword() {
+            const password = document.getElementById('password').value;
+            const response = await fetch('/check-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password })
+            });
+            const result = await response.json();
+            document.getElementById('feedback').innerHTML = result.feedback.join('<br>');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Strength Checker</h1>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <button onclick="checkPassword()">Check Password</button>
+        <div id="feedback"></div>
+    </div>
+</body>
+</html>
